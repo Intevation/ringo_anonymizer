@@ -1,29 +1,22 @@
-import sqlalchemy as sa
-from ringo.model import Base
-from ringo.model.base import BaseItem, BaseFactory
+from ringo.model.modul import ActionItem
+from ringo.model.mixins import Mixin
+from ringo_anonymizer import views
 
+class Anonymizable(Mixin):
 
-class ExtensionFactory(BaseFactory):
-
-    def create(self, user=None):
-        new_item = BaseFactory.create(self, user)
-        return new_item
-
-
-class Extension(BaseItem, Base):
-    """Docstring for anonymizer extension"""
-
-    __tablename__ = 'anonymizers'
-    """Name of the table in the database for this modul. Do not
-    change!"""
-    _modul_id = None
-    """Will be set dynamically. See include me of this modul"""
-
-    # Define columns of the table in the database
-    id = sa.Column(sa.Integer, primary_key=True)
-
-    # Define relations to other tables
+    """Mixin to anonymize other items. Anonymization means removing data
+    from the item."""
 
     @classmethod
-    def get_item_factory(cls):
-        return ExtensionFactory(cls)
+    def get_mixin_actions(cls):
+        actions = []
+        # Add Evaluation action
+        action = ActionItem()
+        action.name = 'Anonymize'
+        action.url = 'anonymize/{id}'
+        action.icon = 'glyphicon glyphicon-eye-close'
+        action.bundle = True
+        actions.append(action)
+        return actions
+
+
