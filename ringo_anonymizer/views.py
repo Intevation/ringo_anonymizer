@@ -20,13 +20,14 @@ def anonymize(request):
 
 
 def _handle_anonymize_request(request, items):
+    _ = request.translate
     clazz = request.context.__model__
     modul = request.context.__modul__
-    renderer = ConfirmDialogRenderer(request, clazz, "anonymize")
+    renderer = ConfirmDialogRenderer(request, clazz, _("anonymize"))
     if (request.method == 'POST'
         and is_confirmed(request)):
-        pass
-
+        for item in items:
+            item.anonymize()
     rvalue = {}
     rvalue['dialog'] = renderer.render(items)
     return rvalue
