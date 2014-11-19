@@ -3,12 +3,12 @@ from ringo.model.mixins import Mixin
 from ringo.lib.form import get_form_config
 from ringo_anonymizer import views
 
+
+class Anonymizable(Mixin):
     """Mixin to anonymize other item. Anonymization means removing data
     from the item. Values which should be anonymized must be marked in
     the items form configuration with the tag "anonymize". Anonymization
     is done depended on the fields datatype:
-
-class Anonymizable(Mixin):
 
      * Datefields will be set to the first day and month of the date.
      * All other types will be set to None
